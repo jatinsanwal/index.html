@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mummy 💕</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ff9ecb,#ff4d88);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* pages */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:20px;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.active{display:flex;}
+
+/* banner */
+.banner{
+  position:absolute;
+  top:10px;
+  width:100%;
+  font-size:20px;
+}
+
+/* button */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#ff4d88;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+/* music */
+#musicBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:white;
+  color:#ff4d88;
+  border-radius:50%;
+  padding:10px;
+  z-index:999;
+}
+
+/* typing */
+.typing{
+  font-size:26px;
+  font-weight:bold;
+}
+
+/* cake */
+#cake{
+  font-size:90px;
+  transition:0.5s;
+}
+
+/* glow */
+.glow{
+  animation:glow 1s infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px white;}
+  to{text-shadow:0 0 30px yellow;}
+}
+
+/* fireworks */
+.fire{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif') center/cover;
+  opacity:0;
+  pointer-events:none;
+}
+.show{opacity:0.6;}
+
+/* confetti */
+.confetti{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:white;
+  top:0;
+  animation:fall 3s linear;
+}
+@keyframes fall{
+  to{transform:translateY(100vh);}
+}
+
+/* hearts */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall 6s linear infinite;
+}
+
+/* balloons */
+.balloon{
+  position:fixed;
+  bottom:-50px;
+  animation:rise 8s linear infinite;
+}
+@keyframes rise{
+  to{transform:translateY(-120vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="fire" class="fire"></div>
+
+<audio id="music" src="your-music.mp3"></audio>
+<button id="musicBtn" onclick="toggleMusic()">🎶</button>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <div class="banner">🎉🎀 HAPPY BIRTHDAY 🎀🎉</div>
+  <h1 id="title"></h1>
+  <p id="sub"></p>
+  <button onclick="next(2)">Enter 🎁</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <div class="banner">🎂 CELEBRATION TIME 🎂</div>
+
+  <div id="cake" class="glow">🎂</div>
+
+  <button onclick="cutCake()">Cut Cake 🔪</button>
+  <p id="cakeMsg"></p>
+
+  <button onclick="next(3)">Next 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h1>💌 Message</h1>
+  <p id="msg"></p>
+  <button onclick="next(4)">Memories 🎥</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h1>🎬 Memories</h1>
+  <video controls width="90%">
+    <source src="your-video.mp4">
+  </video>
+  <button onclick="next(5)">Final 🎁</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <h1 class="typing">I Love You Mummy 💕</h1>
+  <p>Sabse best mummy 💖</p>
+</div>
+
+<script>
+function next(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+
+  if(n==1) startIntro();
+  if(n==3) startMsg();
+}
+
+/* typing intro */
+function startIntro(){
+  type("Happy Birthday Mummy Ji 💕","title",50);
+  setTimeout(()=>type("Sabse pyari aur strongest mummy ke liye 💖","sub",30),2000);
+}
+
+/* typing msg */
+function startMsg(){
+  type("Mummy ji aap meri life ka sabse important hissa ho 💖\n\nAap meri strength ho 💕\n\nAaj jo bhi hu sirf aapki wajah se hu 💫\n\nThank you for everything ❤️","msg",35);
+}
+
+function type(text,id,speed){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerHTML="";
+  function t(){
+    if(i<text.length){
+      el.innerHTML+= text.charAt(i)=="\n"?"<br>":text.charAt(i);
+      i++;
+      setTimeout(t,speed);
+    }
+  }
+  t();
+}
+
+/* cake cut */
+function cutCake(){
+  document.getElementById("cake").innerHTML="🍰";
+  document.getElementById("cakeMsg").innerHTML="🎉 Cake Cut! Happy Birthday 💕";
+
+  // fireworks
+  document.getElementById("fire").classList.add("show");
+
+  // confetti
+  for(let i=0;i<40;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+function toggleMusic(){
+  let m=document.getElementById("music");
+  m.paused?m.play():m.pause();
+}
+
+/* hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💗";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},600);
+
+/* balloons */
+setInterval(()=>{
+  let b=document.createElement("div");
+  b.innerHTML="🎈";
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),8000);
+},2000);
+
+/* start intro */
+startIntro();
+</script>
+
+</body>
+</html>
